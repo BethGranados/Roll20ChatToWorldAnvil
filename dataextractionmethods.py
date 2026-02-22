@@ -335,9 +335,15 @@ class dataExtractionMethods:
         elif(damage):
             spellRange = ""
             sublabel = damage.find('div', class_="sheet-sublabel")
+            stuff = ""
 
             if(sublabel):
-                spellRange = sublabel.text.replace("\n", "")
+                spellRange = sublabel.span.text.replace("\n", "")
+
+            sheetLabel = damage.find('class', class_="sheet-label")
+
+            if(sheetLabel):
+                stuff = sheetLabel.span.text
 
             rolls = damage.find_all('div', class_="sheet-adv")
 
@@ -350,11 +356,11 @@ class dataExtractionMethods:
             else:
                 roll = damage.find('div', class_="sheet-solo")
                 damTypeBlock = roll.find('span', class_="sheet-sublabel")
-                damType = damTypeBlock.text
-                rollString = rollString + roll.text.replace("\n", " ") + " " + damType
+                #damType = damTypeBlock.text
+                rollString = rollString + roll.text.replace("\n", " ")
                 
 
-            newRollChat = damagechat.damageChat(spellRange, "")
+            newRollChat = damagechat.damageChat(spellRange, rollString, stuff)
             newRollChat.setDebug(debug)
             return newRollChat
         
